@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Avvisi - Gestione Aule</title>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    
+    <style>
+        @media (min-width: 768px) {
+            .nav-title-desktop {
+                justify-content: center !important;
+                order: 2 !important;
+                width: calc(100% - 330px) !important;
+            }
+            .nav-right {
+                 order: 3 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
+
+<header>
+    <nav aria-label="menu nav" class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
+        <div class="flex flex-wrap items-center">
+            <div class="hidden md:flex md:w-1/3 md:order-1"></div>
+
+            <div class="flex flex-shrink w-full justify-center text-white md:w-auto nav-title-desktop">
+                <a href="{{ url_for('dashboard') }}" aria-label="Home">
+                    <span class="text-xl pl-2 font-bold">Gestione Aule e Laboratori Didattici Università ABC</span>
+                </a>
+            </div>
+
+            <div class="flex w-full pt-2 content-center justify-end md:w-auto md:flex-grow nav-right">
+                <ul class="list-reset flex justify-end flex-1 md:flex-none items-center">
+                    {% if email %}
+                    <li class="flex-1 md:flex-none md:mr-3">
+                        <div class="relative inline-block">
+                            <button onclick="toggleDD('myDropdown')" class="drop-button text-white py-2 px-2"> 
+                                <span class="pr-2"><i class="fas fa-user-circle"></i></span> {{ email }} 
+                                <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </button>
+                            <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+                                <div class="border border-gray-800"></div>
+                                <a href="{{ url_for('logout') }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
+                            </div>
+                        </div> 
+                    </li>
+                    {% else %}
+                    <li class="flex-1 md:flex-none md:mr-3">
+                        <a href="{{ url_for('login') }}" class="text-white py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="flex flex-col md:flex-row">
+        
+        <!-- Menu Laterale -->
+        <nav aria-label="alternative nav">
+            <div class="bg-gray-800 shadow-xl h-20 fixed bottom-0 mt-12 md:relative md:h-screen z-10 w-full md:w-48 content-center">
+                <div class="md:mt-12 md:w-48 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
+                    <ul class="list-reset flex flex-row md:flex-col pt-3 md:py-3 px-1 md:px-2 text-center md:text-left">
+                        
+                        <li class="mr-3 flex-1">
+                            <a href="{{ url_for('dashboard') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-blue-600">
+                                <i class="fa fa-calendar pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">ORARI</span>
+                            </a>
+                        </li>
+                        
+                        {% if email %}
+                        <li class="mr-3 flex-1">
+                            <a href="{{ url_for('inserisci_materie') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-green-600">
+                                <i class="fa fa-book pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">INSERISCI PRENOTAZIONE</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="mr-3 flex-1">
+                            <div class="block py-5 md:py-6 pl-1 align-middle text-gray-600 no-underline border-b-2 border-gray-800 cursor-not-allowed" title="Effettua il login per accedere">
+                                <i class="fa fa-book pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-600 block md:inline-block">INSERISCI PRENOTAZIONE 🔒</span>
+                            </div>
+                        </li>
+                        {% endif %}
+                        
+                        <li class="mr-3 flex-1">
+                            <a href="{{ url_for('avvisi') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-yellow-600">
+                                <i class="fa fa-bell pr-0 md:pr-3 text-yellow-600"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-white md:text-white block md:inline-block">AVVISI</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Contenuto Principale -->
+        <section class="w-full">
+            <div id="main" class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+
+                <div class="bg-gray-800 pt-3">
+                    <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
+                        <h1 class="font-bold pl-2">
+                            <i class="fas fa-bell"></i> AVVISI E COMUNICAZIONI
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Info Box -->
+                <div class="flex flex-wrap p-6">
+                    <div class="w-full">
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded" role="alert">
+                            <p class="font-bold"><i class="fas fa-info-circle"></i> Bacheca Pubblica</p>
+                            <p class="text-sm">Qui trovi tutti gli avvisi e le comunicazioni pubblicate dai docenti e dall'amministrazione.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Avvisi -->
+                <div class="flex flex-wrap px-6 pb-6">
+                    <div class="w-full">
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-purple-300 to-purple-100 uppercase text-gray-800 border-b-2 border-purple-300 rounded-tl-lg rounded-tr-lg p-3">
+                                <h2 class="font-bold uppercase text-purple-900">
+                                    <i class="fas fa-bullhorn"></i> Tutti gli Avvisi ({{ avvisi|length }})
+                                </h2>
+                            </div>
+                            
+                            <div class="p-5">
+                                {% if avvisi %}
+                                <div class="space-y-4">
+                                    {% for avviso in avvisi %}
+                                    <div class="border border-purple-300 bg-purple-50 rounded-lg p-4 hover:shadow-lg transition-shadow">
+                                        
+                                        <!-- Header Avviso -->
+                                        <div class="flex items-start justify-between mb-2">
+                                            <div class="flex-1">
+                                                <h3 class="font-bold text-lg text-gray-800 mb-1">
+                                                    <i class="fas fa-bullhorn text-purple-600"></i> {{ avviso[1] }}
+                                                </h3>
+                                                <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                                                    <span><i class="fas fa-user"></i> {{ avviso[3] }}</span>
+                                                    <span class="px-2 py-1 rounded-full text-xs font-semibold {% if avviso[4] == 'admin' %}bg-red-200 text-red-800{% else %}bg-blue-200 text-blue-800{% endif %}">
+                                                        <i class="fas fa-user-tag"></i> {{ avviso[4]|upper }}
+                                                    </span>
+                                                    <span><i class="fas fa-calendar"></i> {{ avviso[5].strftime('%d/%m/%Y %H:%M') }}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Pulsante Cancella (Solo Admin) -->
+                                            {% if ruolo == 'admin' %}
+                                            <form method="POST" action="{{ url_for('cancella_avviso', id_avviso=avviso[0]) }}" 
+                                                  onsubmit="return confirm('Sei sicuro di voler eliminare questo avviso?');"
+                                                  class="ml-3">
+                                                <button type="submit" 
+                                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm inline-flex items-center">
+                                                    <i class="fas fa-trash mr-1"></i> Elimina
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <!-- Messaggio -->
+                                        <div class="text-gray-700 mt-3 whitespace-pre-line border-t border-purple-200 pt-3">
+                                            {{ avviso[2] }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="text-center text-gray-500 py-12">
+                                    <i class="fas fa-inbox text-6xl mb-4 text-gray-400"></i>
+                                    <p class="text-xl font-bold mb-2">Nessun avviso disponibile</p>
+                                    <p class="text-sm">Al momento non ci sono comunicazioni pubblicate.</p>
+                                    <p class="text-sm">Controlla più tardi per nuovi aggiornamenti.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    function toggleDD(myDropMenu) {
+        document.getElementById(myDropMenu).classList.toggle("invisible");
+    }
+    
+    window.onclick = function(event) {
+        if (!event.target.matches('.drop-button')) {
+            var dropdowns = document.getElementsByClassName("dropdownlist");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (!openDropdown.classList.contains('invisible')) {
+                    openDropdown.classList.add('invisible');
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

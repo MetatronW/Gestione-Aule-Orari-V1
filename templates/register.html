@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione Docente</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="register-container">
+        <h2>Registrazione Docente</h2>
+        
+        <div class="info">
+            <i class="fas fa-info-circle"></i> Puoi registrarti solo con email del dominio <strong>@uni.com</strong> 
+        </div>
+        
+        {% if errore %}
+            <div class="errore">{{ errore }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <label>
+                <i class="fas fa-user field-icon"></i>Nome:
+            </label>
+            <input type="text" name="nome" required>
+            
+            <label>
+                <i class="fas fa-user field-icon"></i>Cognome:
+            </label>
+            <input type="text" name="cognome" required>
+            
+            <label>
+                <i class="fas fa-envelope field-icon"></i>Email:
+            </label>
+            <input type="email" name="email" placeholder="esempio@uni.com" required>
+            
+            <label>
+                <i class="fas fa-lock field-icon"></i>Password:
+            </label>
+            <input type="password" name="password" required>
+
+            <label>
+                <i class="fas fa-book field-icon"></i>Materia di cui sei Titolare:
+            </label>
+            <select name="id_materia" required>
+                <option value="">-- Seleziona una materia --</option>
+                {% for materia in materie %}
+                <option value="{{ materia[0] }}">{{ materia[1] }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">
+                <i class="fas fa-user-plus"></i> Registrati come Docente
+            </button>
+        </form>
+        
+        <div class="login-link">
+            <p>Hai già un account? <a href="{{ url_for('login') }}">Accedi</a></p>
+        </div>
+    </div>
+</body>
+</html>

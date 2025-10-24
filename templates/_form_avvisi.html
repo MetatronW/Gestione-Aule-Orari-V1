@@ -1,0 +1,73 @@
+<div class="bg-white border-transparent rounded-lg shadow-xl p-6">
+    <div class="bg-gradient-to-b from-green-300 to-green-100 uppercase text-gray-800 border-b-2 border-green-300 rounded-tl-lg rounded-tr-lg p-3 mb-4">
+        <h2 class="font-bold uppercase text-green-900">
+            <i class="fas fa-bullhorn"></i> Nuovo Avviso / Comunicazione
+        </h2>
+    </div>
+
+    {% if messaggio_successo %}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Successo!</strong>
+            <span class="block sm:inline">{{ messaggio_successo }}</span>
+        </div>
+    {% endif %}
+
+    {% if errore %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Errore!</strong>
+            <span class="block sm:inline">{{ errore }}</span>
+        </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('inserisci_avvisi') }}" class="space-y-4">
+        
+        <!-- Titolo Avviso -->
+        <div class="form-group">
+            <label for="titolo" class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-heading text-green-600"></i> Titolo Avviso *
+            </label>
+            <input type="text" name="titolo" id="titolo" required maxlength="200"
+                   class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md border">
+        </div>
+
+        <!-- Messaggio -->
+        <div class="form-group">
+            <label for="messaggio" class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-comment-alt text-green-600"></i> Messaggio *
+            </label>
+            <textarea name="messaggio" id="messaggio" rows="8" required
+                      class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md border"></textarea>
+        </div>
+
+        <!-- Info Box -->
+        <div class="bg-green-50 border border-green-200 rounded-md p-4">
+            <p class="text-sm text-green-900">
+                <i class="fas fa-info-circle"></i> <strong>Nota:</strong> L'avviso sarà visibile a tutti gli utenti nella sezione "AVVISI".
+            </p>
+        </div>
+
+        <!-- Bottoni Submit -->
+        <div class="flex items-center justify-end space-x-3 pt-4">
+            <a href="{{ url_for('avvisi') }}" 
+               class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                <i class="fas fa-times mr-2"></i>
+                Annulla
+            </a>
+            <button type="submit" 
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                <i class="fas fa-paper-plane mr-2"></i>
+                Pubblica Avviso
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    select, input, textarea {
+        transition: all 0.3s ease;
+    }
+    
+    select:focus, input:focus, textarea:focus {
+        box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+    }
+</style>

@@ -1,0 +1,71 @@
+@media (min-width: 768px) {
+    .nav-title-desktop {
+        justify-content: center !important;
+        order: 2 !important;
+        width: calc(100% - 330px) !important;
+    }
+    .nav-right {
+         order: 3 !important;
+    }
+}
+
+/* Stili per la tabella orari */
+.orari-table {
+    font-size: 0.875rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.orari-table th {
+    background: linear-gradient(to bottom, #3b82f6, #2563eb);
+    color: white;
+    font-weight: bold;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid #1e40af;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.orari-table td {
+    border: 1px solid #d1d5db;
+    padding: 10px 8px;
+    text-align: center;
+    vertical-align: middle;
+    min-height: 50px;
+    background-color: white;
+}
+
+.orari-table .fascia-oraria {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.orari-table .pausa-pranzo {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.materia-cell {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.empty-cell {
+    background-color: #f9fafb;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}

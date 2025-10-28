@@ -1,0 +1,47 @@
+/* Stili Generali */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.5);
+}
+
+select, input {
+    transition: all 0.3s ease;
+}
+
+select:focus, input:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Fasce occupate/disponibili */
+select#fascia_oraria option.occupata {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+select#fascia_oraria option.disponibile {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* Rendi l'opzione disabilitata meno intrusiva */
+select#fascia_oraria option:disabled {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Stili per il Loader */
+.loader {
+    border-top-color: #10B981; 
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+}
+
+@-webkit-keyframes spinner {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

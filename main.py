@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from connection import conn
 
 app = Flask(__name__)
@@ -167,7 +167,37 @@ def dashboard():
                          fasce_orarie=fasce_orarie,
                          griglia_oraria=griglia_oraria)
 
+
+
 #####################################################################
+## new
+@app.route('/fasce-occupate', methods=['GET'])
+def get_fasce_occupate():
+    """ restituisce le fasce orarie già prenotate per una data e aula."""
+    if 'email' not in session:
+        # Blocca l'accesso se l'utente non è loggato
+        return jsonify({'errore': 'Non autorizzato'}), 403
+        
+    data_prenotazione = request.args.get('data')
+    id_aula = request.args.get('id_aula')
+    
+    if not data_prenotazione or not id_aula:
+        return jsonify({'errore': 'Parametri mancanti: data o id_aula'}), 400
+
+    cursor = conn.cursor()
+    # Query per trovare tutte le fasce orarie occupate
+    query = "SELECT fascia_oraria FROM prenotazioni WHERE data_prenotazione = %s AND id_aula = %s"
+    cursor.execute(query, (data_prenotazione, id_aula))
+    
+    # Estrae solo i valori della fascia oraria
+    fasce_occupate = [row[0] for row in cursor.fetchall()]
+    cursor.close()
+    
+    # Restituisce l'elenco in formato JSON
+    return jsonify({'fasce_occupate': fasce_occupate})
+
+#####################################################################
+
 
 @app.route('/inserisci-materie', methods=['GET', 'POST'])
 def inserisci_materie():

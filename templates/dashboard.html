@@ -1,248 +1,119 @@
-<!DOCTYPE html>
-<html lang="it">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gestione Aule e Laboratori Didattici</title>
-    <meta name="author" content="name">
-    <meta name="description" content="Template per la gestione di aule e laboratori">
-    <meta name="keywords" content="aule, laboratori, università, tailwind">
+{% block title %}ORARI{% endblock %}
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}"> 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
 
-</head>
-
-<body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
-
-<header>
-    <nav aria-label="menu nav" class="bg-gray-800 pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
-        <div class="flex flex-wrap items-center">
-            <div class="hidden md:flex md:w-1/3 md:order-1"></div>
-
-            <div class="flex flex-shrink w-full justify-center text-white md:w-auto nav-title-desktop">
-                <a href="{{ url_for('dashboard') }}" aria-label="Home">
-                    <span class="text-xl pl-2 font-bold">Gestione Aule e Laboratori Didattici Università ABC</span>
-                </a>
-            </div>
-
-            <div class="flex w-full pt-2 content-center justify-end md:w-auto md:flex-grow nav-right">
-                <ul class="list-reset flex justify-end flex-1 md:flex-none items-center">
-                    {% if email %}
-                    <li class="flex-1 md:flex-none md:mr-3">
-                        <div class="relative inline-block">
-                            <button onclick="toggleDD('myDropdown')" class="drop-button text-white py-2 px-2"> 
-                                <span class="pr-2"><i class="fas fa-user-circle"></i></span> {{ email }} 
-                                <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </button>
-                            <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                                <div class="border border-gray-800"></div>
-                                <a href="{{ url_for('logout') }}" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                            </div>
-                        </div> 
-                    </li>
-                    {% else %}
-                    <li class="flex-1 md:flex-none md:mr-3">
-                        <a href="{{ url_for('login') }}" class="text-white py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<main>
-    <div class="flex flex-col md:flex-row">
-        <nav aria-label="alternative nav">
-            <div class="bg-gray-800 shadow-xl h-20 fixed bottom-0 mt-12 md:relative md:h-screen z-10 w-full md:w-48 content-center">
-                <div class="md:mt-12 md:w-48 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
-                    <ul class="list-reset flex flex-row md:flex-col pt-3 md:py-3 px-1 md:px-2 text-center md:text-left">
-                        
-                        <li class="mr-3 flex-1">
-                            <a href="{{ url_for('dashboard') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-blue-600">
-                                <i class="fa fa-calendar pr-0 md:pr-3 text-blue-600"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-white md:text-white block md:inline-block">ORARI</span>
-                            </a>
-                        </li>
-                        
-                        {% if email %}
-                        <li class="mr-3 flex-1">
-                            <a href="{{ url_for('inserisci_materie') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-pink-500">
-                                <i class="fa fa-book pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">INSERISCI PRENOTAZIONE</span>
-                            </a>
-                        </li>
-                        {% else %}
-                        <li class="mr-3 flex-1">
-                            <div class="block py-5 md:py-6 pl-1 align-middle text-gray-600 no-underline border-b-2 border-gray-800 cursor-not-allowed" title="Effettua il login per accedere">
-                                <i class="fa fa-book pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-600 block md:inline-block">INSERISCI PRENOTAZIONE 🔒</span>
-                            </div>
-                        </li>
-                        {% endif %}
-                        
-                        <li class="mr-3 flex-1">
-                            <a href="{{ url_for('avvisi') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-yellow-500">
-                                <i class="fa fa-bell pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">AVVISI</span>
-                            </a>
-                        </li>
-                        
-                        {% if email %}
-                        <li class="mr-3 flex-1">
-                            <a href="{{ url_for('inserisci_avvisi') }}" class="block py-5 md:py-6 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-purple-500">
-                                <i class="fa fa-bullhorn pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block">INSERISCI AVVISI</span>
-                            </a>
-                        </li>
-                        {% else %}
-                        <li class="mr-3 flex-1">
-                            <div class="block py-5 md:py-6 pl-1 align-middle text-gray-600 no-underline border-b-2 border-gray-800 cursor-not-allowed" title="Effettua il login per accedere">
-                                <i class="fa fa-bullhorn pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base text-gray-600 block md:inline-block">INSERISCI AVVISI 🔒</span>
-                            </div>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        
-        <section class="w-full">
-            <div id="main" class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
-
-                <div class="bg-gray-800 pt-3">
-                    <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                        <h1 class="font-bold pl-2">
-                            <i class="fas fa-calendar-alt"></i> ORARI AULE E LABORATORI
-                        </h1>
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap p-6">
-                    <div class="w-full md:w-1/2 xl:w-1/3">
-                        <div class="bg-white border-b-4 border-blue-500 rounded-lg shadow-xl p-5">
-                            <form method="GET" action="{{ url_for('dashboard') }}">
-                                <div class="flex flex-col items-start">
-                                    <h2 class="font-bold uppercase text-gray-700 mb-3">
-                                        <i class="fas fa-calendar-day text-blue-600"></i> Seleziona Data
-                                    </h2>
-                                    <div class="w-full flex space-x-2">
-                                        <input type="date" name="data" value="{{ data_selezionata }}" 
-                                               class="form-input flex-1 border border-gray-400 p-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-                                            <i class="fas fa-search"></i> Cerca
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    {% if data_selezionata %}
-                    <div class="w-full md:w-1/2 xl:w-2/3 md:pl-6">
-                        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded" role="alert">
-                            <p class="font-bold"><i class="fas fa-info-circle"></i> Info Data</p>
-                            <p class="text-sm">Prenotazioni per il giorno: <strong>{{ data_selezionata }}</strong></p>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-
-                {% if data_selezionata %}
-                <div class="flex flex-wrap px-6 pb-6">
-                    <div class="w-full">
-                        <div class="bg-white border-transparent rounded-lg shadow-xl">
-                            <div class="bg-gradient-to-b from-blue-300 to-blue-100 uppercase text-gray-800 border-b-2 border-blue-300 rounded-tl-lg rounded-tr-lg p-3">
-                                <h2 class="font-bold uppercase text-blue-900">
-                                    <i class="fas fa-table"></i> Griglia Oraria - {{ data_selezionata }}
-                                </h2>
-                            </div>
-                            
-                            <div class="p-5 table-container">
-                                <table class="w-full orari-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="fascia-oraria">ORARIO</th>
-                                            {% for aula in aule %}
-                                            <th>{{ aula[1] }}</th>
-                                            {% endfor %}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for fascia in fasce_orarie %}
-                                        <tr>
-                                            {% if fascia == '13-14' %}
-                                            <td class="pausa-pranzo">{{ fascia }}</td>
-                                            <td colspan="{{ aule|length }}" class="pausa-pranzo">
-                                                 PAUSA PRANZO
-                                            </td>
-                                            {% else %}
-                                            <td class="fascia-oraria">{{ fascia }}</td>
-                                            {% for aula in aule %}
-                                                {% set prenotazione = griglia_oraria.get((fascia, aula[0])) %}
-                                                {% if prenotazione %}
-                                                <td>
-                                                    <div class="materia-cell">
-                                                        {{ prenotazione.nome_materia }}
-                                                    </div>
-                                                </td>
-                                                {% else %}
-                                                <td class="empty-cell"></td>
-                                                {% endif %}
-                                            {% endfor %}
-                                            {% endif %}
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {% if not griglia_oraria %}
-                            <div class="p-5 text-center text-gray-500">
-                                <i class="fas fa-calendar-times text-4xl mb-3"></i>
-                                <p class="text-lg">Nessuna prenotazione trovata per questa data.</p>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <div class="flex flex-wrap px-6 pb-6">
-                    <div class="w-full">
-                        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded" role="alert">
-                            <p class="font-bold"><i class="fas fa-exclamation-triangle"></i> Nessuna data selezionata</p>
-                            <p>Seleziona una data dal calendario per visualizzare gli orari delle prenotazioni.</p>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-            
-            </div>
-        </section>
+{% block content %}
+<!-- HEADER PAGINA -->
+<div class="bg-gray-800 pt-3">
+    <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
+        <h1 class="font-bold pl-2">
+            <i class="fas fa-calendar-alt"></i> ORARI AULE E LABORATORI
+        </h1>
     </div>
-</main>
+</div>
 
-<script>
-    function toggleDD(myDropMenu) {
-        document.getElementById(myDropMenu).classList.toggle("invisible");
-    }
+<!-- FORM SELEZIONE DATA -->
+<div class="flex flex-wrap p-6">
+    <div class="w-full md:w-1/2 xl:w-1/3">
+        <div class="bg-white border-b-4 border-blue-500 rounded-lg shadow-xl p-5">
+            <form method="GET" action="{{ url_for('dashboard') }}">
+                <div class="flex flex-col items-start">
+                    <h2 class="font-bold uppercase text-gray-700 mb-3">
+                        <i class="fas fa-calendar-day text-blue-600"></i> Seleziona Data
+                    </h2>
+                    <div class="w-full flex space-x-2">
+                        <input type="date" name="data" value="{{ data_selezionata }}" 
+                               class="form-input flex-1 border border-gray-400 p-2 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+                            <i class="fas fa-search"></i> Cerca
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    window.onclick = function(event) {
-        if (!event.target.matches('.drop-button') && !event.target.matches('.drop-search')) {
-            var dropdowns = document.getElementsByClassName("dropdownlist");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (!openDropdown.classList.contains('invisible')) {
-                    openDropdown.classList.add('invisible');
-                }
-            }
-        }
-    }
-</script>
+    {% if data_selezionata %}
+    <div class="w-full md:w-1/2 xl:w-2/3 md:pl-6">
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded" role="alert">
+            <p class="font-bold"><i class="fas fa-info-circle"></i> Info Data</p>
+            <p class="text-sm">Prenotazioni per il giorno: <strong>{{ data_selezionata }}</strong></p>
+        </div>
+    </div>
+    {% endif %}
+</div>
 
-</body>
-</html>
+<!-- TABELLA ORARI -->
+{% if data_selezionata %}
+<div class="flex flex-wrap px-6 pb-6">
+    <div class="w-full">
+        <div class="bg-white border-transparent rounded-lg shadow-xl">
+            <div class="bg-gradient-to-b from-blue-300 to-blue-100 uppercase text-gray-800 border-b-2 border-blue-300 rounded-tl-lg rounded-tr-lg p-3">
+                <h2 class="font-bold uppercase text-blue-900">
+                    <i class="fas fa-table"></i> Griglia Oraria - {{ data_selezionata }}
+                </h2>
+            </div>
+            
+            <div class="p-5 table-container">
+                <table class="w-full orari-table">
+                    <thead>
+                        <tr>
+                            <th class="fascia-oraria">ORARIO</th>
+                            {% for aula in aule %}
+                            <th>{{ aula[1] }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fascia in fasce_orarie %}
+                        <tr>
+                            {% if fascia == '13-14' %}
+                            <td class="pausa-pranzo">{{ fascia }}</td>
+                            <td colspan="{{ aule|length }}" class="pausa-pranzo">
+                                🍽️ PAUSA PRANZO
+                            </td>
+                            {% else %}
+                            <td class="fascia-oraria">{{ fascia }}</td>
+                            {% for aula in aule %}
+                                {% set prenotazione = griglia_oraria.get((fascia, aula[0])) %}
+                                {% if prenotazione %}
+                                <td>
+                                    <div class="materia-cell">
+                                        {{ prenotazione.nome_materia }}
+                                    </div>
+                                </td>
+                                {% else %}
+                                <td class="empty-cell"></td>
+                                {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if not griglia_oraria %}
+            <div class="p-5 text-center text-gray-500">
+                <i class="fas fa-calendar-times text-4xl mb-3"></i>
+                <p class="text-lg">Nessuna prenotazione trovata per questa data.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="flex flex-wrap px-6 pb-6">
+    <div class="w-full">
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded" role="alert">
+            <p class="font-bold"><i class="fas fa-exclamation-triangle"></i> Nessuna data selezionata</p>
+            <p>Seleziona una data dal calendario per visualizzare gli orari delle prenotazioni.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
